@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Remuneração do Empregado</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    label, select, input { display: block; margin: 10px 0; }
+    .section { margin-top: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    .hidden { display: none; }
+    #relatorio { white-space: pre-line; background: #f9f9f9; padding: 15px; border-radius: 5px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Calculadora de Remuneração do Empregado</h1>
+
+  <div>
+    <label for="filial">Filial:</label>
+    <select id="filial">
+      <option value="01">01 - Matriz</option>
+      <option value="02">02 - Itumbiara</option>
+      <option value="03">03 - Maracanaú</option>
+    </select>
+
+    <div class="section">
+      <h2>Remuneração Direta (Proventos)</h2>
+      <label for="salario">Salário Base Mensal:</label>
+      <input type="number" id="salario">
+
+      <label for="cargo">Grupo de Cargo:</label>
+      <select id="cargo">
+        <option value="01">01 - Operador/Técnico/Assistente</option>
+        <option value="02">02 - Analista/Especialista</option>
+        <option value="03">03 - Supervisor/Coordenador</option>
+        <option value="04">04 - Gerente/Diretor</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <h2>Remuneração Indireta (Benefícios)</h2>
+      <label for="previdencia">Previdência Privada (%):</label>
+      <input type="range" id="previdencia" min="1" max="2.5" step="0.1" value="0">
+      <span id="previdencia_valor">0%</span>
+
+      <label for="transporte">Tipo de Transporte:</label>
+      <select id="transporte"></select>
+
+      <label for="refeicao">Refeição:</label>
+      <select id="refeicao">
+        <option value="vale">Vale Refeição</option>
+        <option value="refeitorio">Refeitório</option>
+      </select>
+
+      <label for="alimentacao">Vale Alimentação:</label>
+      <select id="alimentacao">
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+
+      <label for="seguro">Seguro de Vida:</label>
+      <select id="seguro">
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+
+      <label for="odonto">Plano Odontológico:</label>
+      <select id="odonto">
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+      <label for="num_odonto">Número de Beneficiários do Odonto:</label>
+      <input type="number" id="num_odonto" min="0">
+
+      <label for="saude">Plano de Saúde:</label>
+      <select id="saude">
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+      <div id="saude_beneficiarios"></div>
+    </div>
+
+    <button onclick="calcular()">Calcular</button>
+    <button onclick="limpar()">Limpar</button>
+
+    <div id="relatorio"></div>
+  </div>
+
+  <script>
+    document.getElementById("salario").addEventListener("input", atualizarPrevidencia);
+    document.getElementById("cargo").addEventListener("change", atualizarTransporte);
+    document.getElementById("filial").addEventListener("change", () => {
+      atualizarTransporte();
+      atualizarSaudeBeneficiarios();
+    });
+    document.getElementById("saude").addEventListener("change", atualizarSaudeBeneficiarios);
+
+    function atualizarPrevidencia() {
+      const salario = parseFloat(document.getElementById("salario").value) || 0;
+      const previdencia = document.getElementById("previdencia");
+      if (salario <= 6000) {
+        previdencia.min = 1;
+        previdencia.max = 2.5;
+      } else {
+        previdencia.min = 1;
+        previdencia.max = 5;
+      }
+      previdencia.value = 0;
+      document.getElementById("previdencia_valor").textContent = "0%";
+    }
+
+    document.getElementById("previdencia").addEventListener("input", () => {
+      document.getElementById("previdencia_valor").textContent = document.getElementById("previdencia").value + "%";
+    });
+
+    function atualizarTransporte() {
+      const cargo = document.getElementById("cargo").value;
+      const transporte = document.getElementById("transporte");
+      transporte.innerHTML = "";
+      transporte.innerHTML += '<option value="rota">Rota</option>';
+      transporte.innerHTML += '<option value="vale">Vale Transporte</option>';
+      if (cargo === "03" || cargo === "04") {
+        transporte.innerHTML += '<option value="combustivel">Vale Combustível</option>';
+      }
+    }
+
+    function atualizarSaudeBeneficiarios() {
+      const saude = document.getElementById("saude").value;
+      const filial = document.getElementById("filial").value;
+      const container = document.getElementById("saude_beneficiarios");
+      container.innerHTML = "";
+      if (saude === "sim" && filial === "02") {
+        for (let i = 1; i <= 5; i++) {
+          container.innerHTML += `
+            <label><input type="checkbox" id="check_benef_${i}"> Beneficiário ${i}</label>
+            <select id="idade_benef_${i}">
+              <option value="00-18">00 – 18</option>
+              <option value="19-23">19 – 23</option>
+              <option value="24-28">24 – 28</option>
+              <option value="29-33">29 – 33</option>
+              <option value="34-38">34 – 38</option>
+              <option value="39-43">39 – 43</option>
+              <option value="44-48">44 – 48</option>
+              <option value="49-53">49 – 53</option>
+              <option value="54-58">54 – 58</option>
+              <option value="59+">59 ou mais</option>
+            </select>`;
+        }
+      } else if (saude === "sim" && (filial === "01" || filial === "03")) {
+        container.innerHTML = '<label for="num_saude">Número de Beneficiários do Plano de Saúde:</label><input type="number" id="num_saude" min="0">';
+      }
+    }
+
+    function limpar() {
+      document.querySelector("form")?.reset?.();
+      document.getElementById("relatorio").innerHTML = "";
+      document.getElementById("previdencia_valor").textContent = "0%";
+      atualizarTransporte();
+      atualizarPrevidencia();
+      document.getElementById("saude_beneficiarios").innerHTML = "";
+    }
+
+    function calcular() {
+      const salario = parseFloat(document.getElementById("salario").value) || 0;
+      const previdencia = parseFloat(document.getElementById("previdencia").value) || 0;
+      const filial = document.getElementById("filial").value;
+      const cargo = document.getElementById("cargo").value;
+      const saude = document.getElementById("saude").value;
+      const transporte = document.getElementById("transporte").value;
+      const refeicao = document.getElementById("refeicao").value;
+      const alimentacao = document.getElementById("alimentacao").value;
+      const seguro = document.getElementById("seguro").value;
+      const odonto = document.getElementById("odonto").value;
+      const num_odonto = parseInt(document.getElementById("num_odonto").value) || 0;
+
+      let totalSaude = 0, detalhesSaude = "";
+      if (saude === "sim") {
+        if (filial === "01" || filial === "03") {
+          const numBenef = parseInt(document.getElementById("num_saude").value) || 0;
+          const valores = {"01": 474.05, "02": 681.18, "03": 681.18, "04": 1482.87};
+          totalSaude = valores[cargo] * (1 + numBenef);
+          detalhesSaude = `Plano de Saúde Bradesco (${1 + numBenef} beneficiário(s)): R$ ${totalSaude.toFixed(2)}\n`;
+        } else if (filial === "02") {
+          const faixaGrupo01 = {"00-18": 218.79, "19-23": 251.66, "24-28": 289.38, "29-33": 332.72, "34-38": 366.02, "39-43": 420.96, "44-48": 536.02, "49-53": 712.80, "54-58": 948.07, "59+": 1312.53};
+          const faixaGrupo234 = {"00-18": 264.66, "19-23": 304.38, "24-28": 350.03, "29-33": 402.45, "34-38": 442.76, "39-43": 509.17, "44-48": 648.36, "49-53": 862.19, "54-58": 1146.77, "59+": 1587.61};
+          const faixa = (cargo === "01") ? faixaGrupo01 : faixaGrupo234;
+          for (let i = 1; i <= 5; i++) {
+            const check = document.getElementById(`check_benef_${i}`);
+            const idade = document.getElementById(`idade_benef_${i}`);
+            if (check?.checked && idade) {
+              const valor = faixa[idade.value];
+              totalSaude += valor;
+              detalhesSaude += `Beneficiário ${i} (${idade.value}): R$ ${valor.toFixed(2)}\n`;
+            }
+          }
+        }
+      }
+
+      const previdenciaValor = salario * (previdencia / 100);
+      const valorAlimentacao = alimentacao === "sim" ? 500 : 0;
+      const valorSeguro = seguro === "sim" ? salario.toFixed(2)*0.01 : 0;
+      const valorOdonto = odonto === "sim" ? num_odonto * 25 : 0;
+      const valorTransporte = transporte === "rota" ? 250 : transporte === "vale" ? 200 : 400;
+      const valorRefeicao = refeicao === "vale" ? 400 : 350;
+      const premioAssiduidade = (filial === "02" && (cargo === "01" || cargo === "02")) ? 100 : 0;
+
+      const total = salario + premioAssiduidade + previdenciaValor + totalSaude + valorAlimentacao + valorSeguro + valorOdonto + valorTransporte + valorRefeicao;
+
+      const relatorio = `
+=== Extrato de Remuneração ===
+
+--- Remuneração Direta (Proventos) ---
+Salário Base Mensal: R$ ${salario.toFixed(2)}
+Prêmio Assiduidade: R$ ${premioAssiduidade.toFixed(2)}
+
+--- Remuneração Indireta (Benefícios) ---
+Previdência Privada (${previdencia}%): R$ ${previdenciaValor.toFixed(2)}
+Transporte (${transporte}): R$ ${valorTransporte.toFixed(2)}
+Refeição (${refeicao}): R$ ${valorRefeicao.toFixed(2)}
+Vale Alimentação: R$ ${valorAlimentacao.toFixed(2)}
+Seguro de Vida: R$ ${valorSeguro.toFixed(2)}
+Plano Odontológico (${num_odonto} beneficiário(s)): R$ ${valorOdonto.toFixed(2)}
+${saude === "sim" ? detalhesSaude : "Plano de Saúde: Não contratado"}
+
+--- Total Estimado da Remuneração ---
+R$ ${total.toFixed(2)}
+`;
+
+      document.getElementById("relatorio").textContent = relatorio;
+    }
+  </script>
+</body>
+</html>

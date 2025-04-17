@@ -160,6 +160,7 @@ h1{
   <div>
     <label for="filial">Filial:</label>
     <select id="filial">
+    <option value="00">  </option>
       <option value="01">01 - Matriz</option>
       <option value="02">02 - Itumbiara</option>
       <option value="03">03 - Maracanaú</option>
@@ -190,24 +191,28 @@ h1{
 
       <label for="refeicao">Refeição:</label>
       <select id="refeicao">
+        <option value="selecione"></option>
         <option value="vale">Vale Refeição</option>
         <option value="refeitorio">Refeitório</option>
       </select>
 
       <label for="alimentacao">Vale Alimentação:</label>
       <select id="alimentacao">
+        <option value="selecione"></option>
         <option value="sim">Sim</option>
         <option value="nao">Não</option>
       </select>
 
       <label for="seguro">Seguro de Vida:</label>
       <select id="seguro">
+        <option value="selecione"></option>
         <option value="sim">Sim</option>
         <option value="nao">Não</option>
       </select>
 
       <label for="odonto">Plano Odontológico:</label>
       <select id="odonto">
+        <option value="selecione"></option>
         <option value="sim">Sim</option>
         <option value="nao">Não</option>
       </select>
@@ -216,6 +221,7 @@ h1{
 
       <label for="saude">Plano de Saúde:</label>
       <select id="saude">
+        <option value="selecione"></option>
         <option value="sim">Sim</option>
         <option value="nao">Não</option>
       </select>
@@ -224,6 +230,8 @@ h1{
 
     <button onclick="calcular()">Calcular</button>
     <button onclick="limpar()">Limpar</button>
+
+
 
     <div id="relatorio"></div>
   </div>
@@ -243,10 +251,10 @@ h1{
       const salario = parseFloat(document.getElementById("salario").value) || 0;
       const previdencia = document.getElementById("previdencia");
       if (salario <= 6000) {
-        previdencia.min = 1;
+        previdencia.min = 0;
         previdencia.max = 2.5;
       } else {
-        previdencia.min = 1;
+        previdencia.min = 0;
         previdencia.max = 5;
       }
       previdencia.value = 0;
@@ -257,16 +265,28 @@ h1{
       document.getElementById("previdencia_valor").textContent = document.getElementById("previdencia").value + "%";
     });
 
-    function atualizarTransporte() {
-      const cargo = document.getElementById("cargo").value;
-      const transporte = document.getElementById("transporte");
-      transporte.innerHTML = "";
-      transporte.innerHTML += '<option value="rota">Rota</option>';
-      transporte.innerHTML += '<option value="vale">Vale Transporte</option>';
-      if (cargo === "03" || cargo === "04") {
-        transporte.innerHTML += '<option value="combustivel">Vale Combustível</option>';
-      }
-    }
+function atualizarTransporte() {
+  const cargo = document.getElementById("cargo").value;
+  const filial = document.getElementById("filial").value; // Captura o valor da filial
+  const transporte = document.getElementById("transporte");
+
+  transporte.innerHTML = "";
+
+  transporte.innerHTML += '<option value="nãooptante.">Não optante</option>';
+  transporte.innerHTML += '<option value="rota">Rota</option>';
+
+  // Só adiciona "Vale Transporte" se a filial for 01 ou 03
+  if (filial === "01" || filial === "03") {
+    transporte.innerHTML += '<option value="vale">Vale Transporte</option>';
+  }
+
+  // Só adiciona "Vale Combustível" se cargo for 03 ou 04
+  if (cargo === "03" || cargo === "04") {
+    transporte.innerHTML += '<option value="combustivel">Vale Combustível</option>';
+  }
+}
+
+
 
     function atualizarSaudeBeneficiarios() {
       const saude = document.getElementById("saude").value;
@@ -301,6 +321,7 @@ h1{
       document.getElementById("previdencia_valor").textContent = "0%";
       atualizarTransporte();
       atualizarPrevidencia();
+      document.getElementById("saude_beneficiarios").innerHTML = "";
       document.getElementById("saude_beneficiarios").innerHTML = "";
     }
 
@@ -341,36 +362,77 @@ h1{
       }
 
       const previdenciaValor = salario * (previdencia / 100);
-      const valorAlimentacao = alimentacao === "sim" ? 500 : 0;
+      const valorAlimentacao = alimentacao === "sim" ? 491 : 0;
       const valorSeguro = seguro === "sim" ? salario.toFixed(2)*0.01 : 0;
-      const valorOdonto = odonto === "sim" ? num_odonto * 25 : 0;
-      const valorTransporte = transporte === "rota" ? 250 : transporte === "vale" ? 200 : 400;
-      const valorRefeicao = refeicao === "vale" ? 400 : 350;
-      const premioAssiduidade = (filial === "02" && (cargo === "01" || cargo === "02")) ? 100 : 0;
+      const valorOdonto = odonto === "sim" ? num_odonto * 11.41 : 0;
 
-      const total = salario + premioAssiduidade + previdenciaValor + totalSaude + valorAlimentacao + valorSeguro + valorOdonto + valorTransporte + valorRefeicao;
+      const valorTransporte = (filial === "01" || filial === "03" && (transporte === "rota" )) ?  505.00 :
+      (filial === "01" || filial === "03" && (transporte === "vale" )) ?  198.00:
+      (filial === "01" || filial === "03" && (transporte === "rota" )) ?  505.00 : 
+      (filial === "01" || filial === "03" && (cargo === "03") && (transporte === "combustivel" )) ?  850.00: 
+      (filial === "01" || filial === "03" && (cargo === "04") && (transporte === "combustivel" )) ?  1360.00: 
+      (filial === "02" && (transporte === "rota" )) ?  479.84 :
+      (filial === "02" && (cargo === "03") && (transporte === "combustivel" )) ?  340.00: 
+      (filial === "02" && (cargo === "04") && (transporte === "combustivel" )) ?  680.00: 0;
+      (transporte === "naooptante" || transporte === "null") ?  0.00: 0;
+      
 
-      const relatorio = `
-=== Extrato de Remuneração ===
+      const valorRefeicao = refeicao === "vale" && filial === "02"?  450.00 :
+      refeicao === "refeitorio" && filial === "02"?  701.36 :
+      refeicao === "vale" && (filial === "01" || filial === "03" ) ?  544.72 :
+      refeicao === "refeitorio" && (filial === "01" || filial === "03" )?  660.44 : 0  ;
 
---- Remuneração Direta (Proventos) ---
-Salário Base Mensal: R$ ${salario.toFixed(2)}
-Prêmio Assiduidade: R$ ${premioAssiduidade.toFixed(2)}
 
---- Remuneração Indireta (Benefícios) ---
-Previdência Privada (${previdencia}%): R$ ${previdenciaValor.toFixed(2)}
-Transporte (${transporte}): R$ ${valorTransporte.toFixed(2)}
-Refeição (${refeicao}): R$ ${valorRefeicao.toFixed(2)}
-Vale Alimentação: R$ ${valorAlimentacao.toFixed(2)}
-Seguro de Vida: R$ ${valorSeguro.toFixed(2)}
-Plano Odontológico (${num_odonto} beneficiário(s)): R$ ${valorOdonto.toFixed(2)}
-${saude === "sim" ? detalhesSaude : "Plano de Saúde: Não contratado"}
+      const premioAssiduidade =  filial === "02" && (cargo === "01" || cargo === "02")  ? (salario * 0.1 <= 288.12 ? salario * 0.1 : 288.12)    : 0;   
 
---- Total Estimado da Remuneração ---
-R$ ${total.toFixed(2)}
+    //    const premioAssiduidade = (filial === "02" && (cargo === "01" || cargo === "02")) ? if(salario *0.1)>288.12      100 : 0;
+
+      const total = salario + premioAssiduidade + previdenciaValor + totalSaude + valorAlimentacao + valorSeguro + valorOdonto + valorTransporte + valorRefeicao  ;
+
+//       const relatorio = `
+// === Extrato de Remuneração ===
+
+// --- Remuneração Direta (Proventos) ---
+// Salário Base Mensal: R$ ${salario.toFixed(2)}
+// Prêmio Assiduidade: R$ ${premioAssiduidade.toFixed(2)}
+
+// --- Remuneração Indireta (Benefícios) ---
+// Previdência Privada (${previdencia}%): R$ ${previdenciaValor.toFixed(2)}
+// Transporte (${transporte}): R$ ${valorTransporte.toFixed(2)}
+// Refeição (${refeicao}): R$ ${valorRefeicao.toFixed(2)}
+// Vale Alimentação: R$ ${valorAlimentacao.toFixed(2)}
+// Seguro de Vida: R$ ${valorSeguro.toFixed(2)}
+// Plano Odontológico (${num_odonto} beneficiário(s)): R$ ${valorOdonto.toFixed(2)}
+// ${saude === "sim" ? detalhesSaude : "Plano de Saúde: Não contratado"}
+
+// --- Total Estimado da Remuneração ---
+// R$ ${total.toFixed(2)}
+// `;
+
+const relatorio = `
+  <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+    <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 16px;">📄 <strong>Extrato de Remuneração</strong></h2>
+
+    <h3 style="font-size: 18px; font-weight: bold; margin-top: 16px;">💵 <strong>Remuneração Direta (Proventos)</strong></h3>
+    <p>💰 <strong>Salário Base Mensal:</strong> R$ ${salario.toFixed(2)}</p>
+    <p>🎯 <strong>Prêmio Assiduidade:</strong> R$ ${premioAssiduidade.toFixed(2)}</p>
+
+    <h3 style="font-size: 18px; font-weight: bold; margin-top: 16px;">🎁 <strong>Remuneração Indireta (Benefícios)</strong></h3>
+    <p>🏦 <strong>Previdência Privada (${previdencia}%):</strong> R$ ${previdenciaValor.toFixed(2)}</p>
+    <p>🚌 <strong>Transporte (${transporte}):</strong> R$ ${valorTransporte.toFixed(2)}</p>
+    <p>🍽️ <strong>Refeição (${refeicao}):</strong> R$ ${valorRefeicao.toFixed(2)}</p>
+    <p>🛒 <strong>Vale Alimentação:</strong> R$ ${valorAlimentacao.toFixed(2)}</p>
+    <p>🛡️ <strong>Seguro de Vida:</strong> R$ ${valorSeguro.toFixed(2)}</p>
+    <p>🦷 <strong>Plano Odontológico (${num_odonto} beneficiário(s)):</strong> R$ ${valorOdonto.toFixed(2)}</p>
+    <p>${saude === "sim" ? `❤️ ${detalhesSaude}` : "❌ <strong>Plano de Saúde:</strong> Não contratado"}</p>
+
+    <h3 style="font-size: 18px; font-weight: bold; margin-top: 16px;">📊 <strong>Total Estimado da Remuneração</strong></h3>
+    <p style="font-size: 20px; font-weight: bold;">💸 R$ ${total.toFixed(2)}</p>
+  </div>
 `;
 
-      document.getElementById("relatorio").textContent = relatorio;
+document.getElementById("relatorio").innerHTML = relatorio;
+    //   document.getElementById("relatorio").textContent = relatorio;
     }
   </script>
 </body>

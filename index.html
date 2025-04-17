@@ -343,8 +343,8 @@ function atualizarTransporte() {
         if (filial === "01" || filial === "03") {
           const numBenef = parseInt(document.getElementById("num_saude").value) || 0;
           const valores = {"01": 474.05, "02": 681.18, "03": 681.18, "04": 1482.87};
-          totalSaude = valores[cargo] * (1 + numBenef);
-          detalhesSaude = `Plano de Saúde Bradesco (${1 + numBenef} beneficiário(s)): R$ ${totalSaude.toFixed(2)}\n`;
+          totalSaude = valores[cargo] * (0 + numBenef);
+          detalhesSaude = `Plano de Saúde Bradesco (${0 + numBenef} beneficiário(s)): R$ ${totalSaude.toFixed(2)}\n`;
         } else if (filial === "02") {
           const faixaGrupo01 = {"00-18": 218.79, "19-23": 251.66, "24-28": 289.38, "29-33": 332.72, "34-38": 366.02, "39-43": 420.96, "44-48": 536.02, "49-53": 712.80, "54-58": 948.07, "59+": 1312.53};
           const faixaGrupo234 = {"00-18": 264.66, "19-23": 304.38, "24-28": 350.03, "29-33": 402.45, "34-38": 442.76, "39-43": 509.17, "44-48": 648.36, "49-53": 862.19, "54-58": 1146.77, "59+": 1587.61};
@@ -366,15 +366,27 @@ function atualizarTransporte() {
       const valorSeguro = seguro === "sim" ? salario.toFixed(2)*0.01 : 0;
       const valorOdonto = odonto === "sim" ? num_odonto * 11.41 : 0;
 
-      const valorTransporte = (filial === "01" || filial === "03" && (transporte === "rota" )) ?  505.00 :
-      (filial === "01" || filial === "03" && (transporte === "vale" )) ?  198.00:
-      (filial === "01" || filial === "03" && (transporte === "rota" )) ?  505.00 : 
-      (filial === "01" || filial === "03" && (cargo === "03") && (transporte === "combustivel" )) ?  850.00: 
-      (filial === "01" || filial === "03" && (cargo === "04") && (transporte === "combustivel" )) ?  1360.00: 
-      (filial === "02" && (transporte === "rota" )) ?  479.84 :
-      (filial === "02" && (cargo === "03") && (transporte === "combustivel" )) ?  340.00: 
-      (filial === "02" && (cargo === "04") && (transporte === "combustivel" )) ?  680.00: 0;
-      (transporte === "naooptante" || transporte === "null") ?  0.00: 0;
+      const valorTransporte =  
+  ((filial === "01" || filial === "03") && transporte === "rota") ? 505.00 :
+  ((filial === "01" || filial === "03") && transporte === "vale") ? 198.00 :
+  ((filial === "01" || filial === "03") && cargo === "03" && transporte === "combustivel") ? 850.00 :
+  ((filial === "01" || filial === "03") && cargo === "04" && transporte === "combustivel") ? 1360.00 :
+  (filial === "02" && transporte === "rota") ? 479.84 :
+  (filial === "02" && cargo === "03" && transporte === "combustivel") ? 340.00 :
+  (filial === "02" && cargo === "04" && transporte === "combustivel") ? 680.00 :
+  (transporte === "naooptante" || transporte === "null") ? 0.00 :
+  0;
+
+
+    //   const valorTransporte = 
+    //   (filial === "01" || filial === "03" && (transporte === "rota" )) ?  505.00 :
+    //   (filial === "01" || filial === "03" && (transporte === "vale" )) ?  198.00:
+    //   (filial === "01" || filial === "03" && (cargo === "03") && (transporte === "combustivel" )) ?  850.00: 
+    //   (filial === "01" || filial === "03" && (cargo === "04") && (transporte === "combustivel" )) ?  1360.00: 
+    //   (filial === "02" && (transporte === "rota" )) ?  479.84 :
+    //   (filial === "02" && (cargo === "03") && (transporte === "combustivel" )) ?  340.00: 
+    //   (filial === "02" && (cargo === "04") && (transporte === "combustivel" )) ?  680.00: 0;
+    //   (transporte === "naooptante" || transporte === "null") ?  0.00: 0;
       
 
       const valorRefeicao = refeicao === "vale" && filial === "02"?  450.00 :
@@ -389,25 +401,6 @@ function atualizarTransporte() {
 
       const total = salario + premioAssiduidade + previdenciaValor + totalSaude + valorAlimentacao + valorSeguro + valorOdonto + valorTransporte + valorRefeicao  ;
 
-//       const relatorio = `
-// === Extrato de Remuneração ===
-
-// --- Remuneração Direta (Proventos) ---
-// Salário Base Mensal: R$ ${salario.toFixed(2)}
-// Prêmio Assiduidade: R$ ${premioAssiduidade.toFixed(2)}
-
-// --- Remuneração Indireta (Benefícios) ---
-// Previdência Privada (${previdencia}%): R$ ${previdenciaValor.toFixed(2)}
-// Transporte (${transporte}): R$ ${valorTransporte.toFixed(2)}
-// Refeição (${refeicao}): R$ ${valorRefeicao.toFixed(2)}
-// Vale Alimentação: R$ ${valorAlimentacao.toFixed(2)}
-// Seguro de Vida: R$ ${valorSeguro.toFixed(2)}
-// Plano Odontológico (${num_odonto} beneficiário(s)): R$ ${valorOdonto.toFixed(2)}
-// ${saude === "sim" ? detalhesSaude : "Plano de Saúde: Não contratado"}
-
-// --- Total Estimado da Remuneração ---
-// R$ ${total.toFixed(2)}
-// `;
 
 const relatorio = `
   <div style="font-family: Arial, sans-serif; line-height: 1.6;">

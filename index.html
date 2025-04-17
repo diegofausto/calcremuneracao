@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -5,13 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Remuneração do Empregado</title>
 <style>
-/*     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #eff1f3;
-      color: #011433;
-    }
- */
+/* Paleta de cores */
 :root {
   --azul-claro: #189bbd;
   --azul-escuro: #011433;
@@ -21,8 +16,15 @@
   --azul-profundo: #002e64;
 }
 
-  
-  body {
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
   background: linear-gradient(135deg, var(--azul-escuro), var(--azul-profundo));
   color: var(--branco);
   display: flex;
@@ -32,76 +34,108 @@
   padding: 20px;
 }
 
-    h1 {
-      color: #002e64;
-      text-align: center;
-    }
+.container {
+  background-color: var(--cinza-claro);
+  color: var(--azul-escuro);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  animation: slideUp 0.6s ease-out;
+  transition: transform 0.3s;
+}
 
-    label, select, input {
-      display: block;
-      margin: 10px 0;
-      font-weight: bold;
-    }
+.container:hover {
+  transform: translateY(-5px);
+}
 
-    input, select {
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid #006dac;
-      width: 100%;
-      transition: all 0.3s ease;
-    }
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: var(--azul-medio);
+}
 
-    input:focus, select:focus {
-      box-shadow: 0 0 5px #189bbd;
-      border-color: #189bbd;
-      outline: none;
-    }
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
 
-    button {
-      padding: 10px 20px;
-      background-color: #189bbd;
-      color: #ffffff;
-      border: none;
-      border-radius: 8px;
-      margin-right: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 2px solid var(--azul-claro);
+  border-radius: 10px;
+  background-color: var(--branco);
+  color: var(--azul-escuro);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
 
-    button:hover {
-      background-color: #006dac;
-      transform: scale(1.05);
-    }
+input:focus, select:focus {
+  border-color: var(--azul-medio);
+  box-shadow: 0 0 10px var(--azul-claro);
+  outline: none;
+}
 
-    .section {
-      margin-top: 20px;
-      padding: 20px;
-      border: 1px solid #006dac;
-      border-radius: 10px;
-      background-color: #ffffff;
-      box-shadow: 0 4px 8px rgba(0, 46, 100, 0.1);
-      transition: transform 0.2s ease;
-    }
+button {
+  background-color: var(--azul-claro);
+  color: var(--branco);
+  padding: 12px 20px;
+  margin: 10px 5px 20px 0;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+}
 
-    .section:hover {
-      transform: translateY(-2px);
-    }
+button:hover {
+  background-color: var(--azul-medio);
+  transform: scale(1.05);
+}
 
-    .hidden {
-      display: none;
-    }
+#resultado, #relatorio {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: var(--branco);
+  color: var(--azul-profundo);
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
 
-    #relatorio {
-      white-space: pre-line;
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-      box-shadow: 0 4px 10px rgba(0, 46, 100, 0.2);
-      border-left: 5px solid #006dac;
-    }
+footer {
+  text-align: center;
+  color: var(--cinza-claro);
+  margin-top: 30px;
+}
 
-  .logo {
+footer a {
+  color: var(--azul-claro);
+  text-decoration: underline;
+}
+
+.logo-img {
+  width: 120px;
+  margin-bottom: 10px;
+}
+
+/* Animação inicial */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.logo {
     height: 60px; 
     
 }
@@ -117,6 +151,8 @@ h1{
   
 </head>
 <body>
+
+    <section class="container">
   <h1>
     <img src="https://media.licdn.com/dms/image/v2/C560BAQGUpC-hiw9PLg/company-logo_200_200/company-logo_200_200/0/1630638760389/canpack_group_logo?e=1750291200&amp;v=beta&amp;t=-v2KLC0X9QIVjz1Q1dBAaM0Ju9OJSsbXOuUGT_zpA-M" loading="lazy" alt="Logo da organização CANPACK Group" id="ember35" class="logo">
     Calculadora de Remuneração do Empregado</h1>
@@ -191,6 +227,8 @@ h1{
 
     <div id="relatorio"></div>
   </div>
+
+</section>
 
   <script>
     document.getElementById("salario").addEventListener("input", atualizarPrevidencia);

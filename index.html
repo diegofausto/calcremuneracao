@@ -342,7 +342,7 @@ function atualizarTransporte() {
       if (saude === "sim") {
         if (filial === "01" || filial === "03") {
           const numBenef = parseInt(document.getElementById("num_saude").value) || 0;
-          const valores = {"01": 474.05, "02": 681.18, "03": 681.18, "04": 1482.87};
+          const valores = {"01": 528.00, "02": 758.70, "03": 758.70, "04": 1651.62};
           totalSaude = valores[cargo] * (0 + numBenef);
           detalhesSaude = `Plano de Saúde Bradesco (${0 + numBenef} beneficiário(s)): R$ ${totalSaude.toFixed(2)}\n`;
         } else if (filial === "02") {
@@ -378,16 +378,6 @@ function atualizarTransporte() {
   0;
 
 
-    //   const valorTransporte = 
-    //   (filial === "01" || filial === "03" && (transporte === "rota" )) ?  505.00 :
-    //   (filial === "01" || filial === "03" && (transporte === "vale" )) ?  198.00:
-    //   (filial === "01" || filial === "03" && (cargo === "03") && (transporte === "combustivel" )) ?  850.00: 
-    //   (filial === "01" || filial === "03" && (cargo === "04") && (transporte === "combustivel" )) ?  1360.00: 
-    //   (filial === "02" && (transporte === "rota" )) ?  479.84 :
-    //   (filial === "02" && (cargo === "03") && (transporte === "combustivel" )) ?  340.00: 
-    //   (filial === "02" && (cargo === "04") && (transporte === "combustivel" )) ?  680.00: 0;
-    //   (transporte === "naooptante" || transporte === "null") ?  0.00: 0;
-      
 
       const valorRefeicao = refeicao === "vale" && filial === "02"?  450.00 :
       refeicao === "refeitorio" && filial === "02"?  701.36 :

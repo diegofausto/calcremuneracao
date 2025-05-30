@@ -407,7 +407,7 @@ const relatorio = `
     <p>🛒 <strong>Vale Alimentação:</strong> R$ ${valorAlimentacao.toFixed(2)}</p>
     <p>🛡️ <strong>Seguro de Vida:</strong> R$ ${valorSeguro.toFixed(2)}</p>
     <p>🦷 <strong>Plano Odontológico (${num_odonto} beneficiário(s)):</strong> R$ ${valorOdonto.toFixed(2)}</p>
-    <p>${saude === "sim" ? `❤️ ${detalhesSaude}` : "❌ <strong>Plano de Saúde:</strong> Não contratado"}</p>
+    <p><strong>${saude === "sim" ? `❤️ ${detalhesSaude}` : "❌ Plano de Saúde:</strong> Não contratado"}</p>
 
     <h3 style="font-size: 18px; font-weight: bold; margin-top: 16px;">📊 <strong>Total Estimado da Remuneração</strong></h3>
     <p style="font-size: 20px; font-weight: bold;">💸 R$ ${total.toFixed(2)}</p>

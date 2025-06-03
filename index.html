@@ -295,8 +295,13 @@ function atualizarTransporte() {
       container.innerHTML = "";
       if (saude === "sim" && filial === "02") {
         for (let i = 1; i <= 5; i++) {
-          container.innerHTML += `
-            <label><input type="checkbox" id="check_benef_${i}"> Beneficiário ${i}</label>
+        //   container.innerHTML += `
+        //     <label><input type="checkbox" id="check_benef_${i}"> Beneficiário ${i}</label>
+
+
+        container.innerHTML += `
+        <label> <input type="checkbox" id="check_benef_${i}" style="width: 20px; height: 20px;"> Beneficiário ${i}
+         </label>            
             <select id="idade_benef_${i}">
               <option value="00-18">00 – 18</option>
               <option value="19-23">19 – 23</option>
@@ -355,7 +360,7 @@ function atualizarTransporte() {
             if (check?.checked && idade) {
               const valor = faixa[idade.value];
               totalSaude += valor;
-              detalhesSaude += `Beneficiário ${i} (${idade.value}): R$ ${valor.toFixed(2)}\n`;
+              detalhesSaude += `<strong>Beneficiário ${i} (${idade.value})</strong>: R$ ${valor.toFixed(2)}\n`;
             }
           }
         }
@@ -407,12 +412,13 @@ const relatorio = `
     <p>🛒 <strong>Vale Alimentação:</strong> R$ ${valorAlimentacao.toFixed(2)}</p>
     <p>🛡️ <strong>Seguro de Vida:</strong> R$ ${valorSeguro.toFixed(2)}</p>
     <p>🦷 <strong>Plano Odontológico (${num_odonto} beneficiário(s)):</strong> R$ ${valorOdonto.toFixed(2)}</p>
-    <p><strong>${saude === "sim" ? `❤️ ${detalhesSaude}` : "❌ Plano de Saúde:</strong> Não contratado"}</p>
+    <p>${saude === "sim" ? `❤️<strong> Plano de Saúde:</strong> ${detalhesSaude}` : "<strong>❌ Plano de Saúde</strong>: Não contratado"}</p>
 
     <h3 style="font-size: 18px; font-weight: bold; margin-top: 16px;">📊 <strong>Total Estimado da Remuneração</strong></h3>
-    <p style="font-size: 20px; font-weight: bold;">💸 R$ ${total.toFixed(2)}</p>
+    <p style="font-size: 20px; font-weight: bold;">💸 ${total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'})}</p>
   </div>
 `;
+
 
 document.getElementById("relatorio").innerHTML = relatorio;
     //   document.getElementById("relatorio").textContent = relatorio;

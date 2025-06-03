@@ -166,12 +166,7 @@ h1{
       <option value="03">03 - Maracanaú</option>
     </select>
 
-    <div class="section">
-      <h2>Remuneração Direta (Proventos)</h2>
-      <label for="salario">Salário Base Mensal:</label>
-      <input type="number" id="salario">
-
-      <label for="cargo">Grupo de Cargo:</label>
+          <label for="cargo">Grupo de Cargo:</label>
       <select id="cargo">
         <option value="01">01 - Operador/Técnico/Assistente</option>
         <option value="02">02 - Analista/Especialista</option>
@@ -179,6 +174,32 @@ h1{
         <option value="04">04 - Gerente/Diretor</option>
       </select>
     </div>
+
+
+    <div class="section">
+      <h2>Remuneração Direta (Proventos)</h2>
+      <label for="salario">Salário Base Mensal:</label>
+      <input type="number" id="salario">
+
+
+
+      <label for="periculosidade">Periculosidade:</label>
+      <select id="periculosidade">
+        <option value="selecione"></option>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+
+
+      <label for="adicionalnoturno">Adicional Noturno:</label>
+      <select id="adicionalnoturno">
+        <option value="selecione"></option>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+
+
+
 
     <div class="section">
       <h2>Remuneração Indireta (Benefícios)</h2>
@@ -343,6 +364,28 @@ function atualizarTransporte() {
       const odonto = document.getElementById("odonto").value;
       const num_odonto = parseInt(document.getElementById("num_odonto").value) || 0;
 
+
+    const periculosidade = document.getElementById("periculosidade").value;
+    const adicionalNoturno = document.getElementById("adicionalnoturno").value;
+
+    let valorPericulosidade = 0;
+    let valorAdicionalNoturno = 0;
+
+    if (periculosidade === "sim") {
+        valorPericulosidade = salario * 0.3;
+    }
+
+    if (adicionalNoturno === "sim") {
+        if (filial === "02") {
+            valorAdicionalNoturno = (salario / 220) * 0.2 * 135;
+        } else {
+            valorAdicionalNoturno = (salario / 220) * 0.3 * 135;
+        }
+    }
+
+
+
+
       let totalSaude = 0, detalhesSaude = "";
       if (saude === "sim") {
         if (filial === "01" || filial === "03") {
@@ -403,8 +446,9 @@ const relatorio = `
 
     <h3 style="font-size: 18px; font-weight: bold; margin-top: 16px;">💵 <strong>Remuneração Direta (Proventos)</strong></h3>
     <p>💰 <strong>Salário Base Mensal:</strong> R$ ${salario.toFixed(2)}</p>
-    <p>🎯 <strong>Prêmio Assiduidade:</strong> R$ ${premioAssiduidade.toFixed(2)}</p>
-
+    ${filial === "02" ? `<p>🎯 <strong>Prêmio Assiduidade:</strong> R$ ${premioAssiduidade.toFixed(2)}</p>` : ""}
+    <p>⚠️ <strong>Periculosidade:</strong> R$ ${valorPericulosidade.toFixed(2)}</p>
+    <p>🌙 <strong>Adicional Noturno:</strong> R$ ${valorAdicionalNoturno.toFixed(2)}</p>
     <h3 style="font-size: 18px; font-weight: bold; margin-top: 16px;">🎁 <strong>Remuneração Indireta (Benefícios)</strong></h3>
     <p>🏦 <strong>Previdência Privada (${previdencia}%):</strong> R$ ${previdenciaValor.toFixed(2)}</p>
     <p>🚌 <strong>Transporte (${transporte}):</strong> R$ ${valorTransporte.toFixed(2)}</p>

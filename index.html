@@ -394,8 +394,8 @@ function atualizarTransporte() {
           totalSaude = valores[cargo] * (0 + numBenef);
           detalhesSaude = `Plano de Saúde Bradesco (${0 + numBenef} beneficiário(s)): R$ ${totalSaude.toFixed(2)}\n`;
         } else if (filial === "02") {
-          const faixaGrupo01 = {"00-18": 218.79, "19-23": 251.66, "24-28": 289.38, "29-33": 332.72, "34-38": 366.02, "39-43": 420.96, "44-48": 536.02, "49-53": 712.80, "54-58": 948.07, "59+": 1312.53};
-          const faixaGrupo234 = {"00-18": 264.66, "19-23": 304.38, "24-28": 350.03, "29-33": 402.45, "34-38": 442.76, "39-43": 509.17, "44-48": 648.36, "49-53": 862.19, "54-58": 1146.77, "59+": 1587.61};
+          const faixaGrupo01 = {"00-18": 235.40, "19-23": 270.76, "24-28": 311.34, "29-33": 357.97, "34-38": 393.80, "39-43": 452.91, "44-48": 576.70, "49-53": 766.90, "54-58": 1020.03, "59+": 1412.15};
+          const faixaGrupo234 = {"00-18": 284,75, "19-23": 327.48, "24-28": 376.60, "29-33": 433.00, "34-38": 476.37, "39-43": 547.82, "44-48": 697.57, "49-53": 927.63, "54-58": 1233.81, "59+": 1708.11};
           const faixa = (cargo === "01") ? faixaGrupo01 : faixaGrupo234;
           for (let i = 1; i <= 5; i++) {
             const check = document.getElementById(`check_benef_${i}`);
@@ -410,12 +410,12 @@ function atualizarTransporte() {
       }
 
       const previdenciaValor = salario * (previdencia / 100);
-      const valorAlimentacao = alimentacao === "sim" ? 491 : 0;
+      const valorAlimentacao = alimentacao === "sim" ? 516.53 : 0;
       const valorSeguro = seguro === "sim" ? salario.toFixed(2)*0.01 : 0;
       const valorOdonto = odonto === "sim" ? num_odonto * 11.41 : 0;
 
       const valorTransporte =  
-  ((filial === "01" || filial === "03") && transporte === "rota") ? 505.00 :
+  ((filial === "01" || filial === "03") && transporte === "rota") ? 505.00 : 
   ((filial === "01" || filial === "03") && transporte === "vale") ? 198.00 :
   ((filial === "01" || filial === "03") && cargo === "03" && transporte === "combustivel") ? 850.00 :
   ((filial === "01" || filial === "03") && cargo === "04" && transporte === "combustivel") ? 1360.00 :
@@ -427,9 +427,9 @@ function atualizarTransporte() {
 
 
 
-      const valorRefeicao = refeicao === "vale" && filial === "02"?  450.00 :
+      const valorRefeicao = refeicao === "vale" && filial === "02"?   627.22 :
       refeicao === "refeitorio" && filial === "02"?  701.36 :
-      refeicao === "vale" && (filial === "01" || filial === "03" ) ?  544.72 :
+      refeicao === "vale" && (filial === "01" || filial === "03" ) ?   572.88 :
       refeicao === "refeitorio" && (filial === "01" || filial === "03" )?  660.44 : 0  ;
 
 
@@ -486,5 +486,6 @@ function Voltar() { window.location.href = "https://diegofausto.github.io/calcul
   </script>
 </body>
 </html>
+
 
 

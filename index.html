@@ -440,6 +440,9 @@ function atualizarTransporte() {
       const total = salario + premioAssiduidade + previdenciaValor + totalSaude + valorAlimentacao + valorSeguro + valorOdonto + valorTransporte + valorRefeicao  ;
 
 
+const subtotalDireta = salario + (filial === "02" ? premioAssiduidade : 0) + valorPericulosidade + valorAdicionalNoturno;
+const subtotalIndireta = previdenciaValor + valorTransporte + valorRefeicao + valorAlimentacao + valorSeguro + valorOdonto;
+
 const relatorio = `
   <div style="font-family: Arial, sans-serif; line-height: 1.6;">
     <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 16px;">📄 <strong>Extrato do Simulador de Remuneração</strong></h2>
@@ -449,6 +452,9 @@ const relatorio = `
     ${filial === "02" ? `<p>🎯 <strong>Prêmio Assiduidade:</strong> R$ ${premioAssiduidade.toFixed(2)}</p>` : ""}
     <p>⚠️ <strong>Periculosidade:</strong> R$ ${valorPericulosidade.toFixed(2)}</p>
     <p>🌙 <strong>Adicional Noturno:</strong> R$ ${valorAdicionalNoturno.toFixed(2)}</p>
+    <p style="font-weight: bold; margin-top: 8px;">🔢 <strong>Subtotal Remuneração Direta:</strong> R$ ${subtotalDireta.toFixed(2)}</p>
+
+    
     <h3 style="font-size: 18px; font-weight: bold; margin-top: 16px;">🎁 <strong>Remuneração Indireta (Benefícios)</strong></h3>
     <p>🏦 <strong>Previdência Privada (${previdencia}%):</strong> R$ ${previdenciaValor.toFixed(2)}</p>
     <p>🚌 <strong>Transporte (${transporte}):</strong> R$ ${valorTransporte.toFixed(2)}</p>
@@ -457,6 +463,11 @@ const relatorio = `
     <p>🛡️ <strong>Seguro de Vida:</strong> R$ ${valorSeguro.toFixed(2)}</p>
     <p>🦷 <strong>Plano Odontológico (${num_odonto} beneficiário(s)):</strong> R$ ${valorOdonto.toFixed(2)}</p>
     <p>${saude === "sim" ? `❤️<strong> Plano de Saúde:</strong> ${detalhesSaude}` : "<strong>❌ Plano de Saúde</strong>: Não contratado"}</p>
+    <p style="font-weight: bold; margin-top: 8px;">🔢 <strong>Subtotal Remuneração Indireta:</strong> R$ ${subtotalIndireta.toFixed(2)}</p>
+    <p style="background-color: #ffffcc; padding: 8px; border-left: 4px solid #ffcc00; font-style: italic; margin-top: 8px;">
+      💡 <strong>Benefício também é dinheiro — só muda a forma como chega até você.</strong>
+    </p>
+
 
     <h3 style="font-size: 18px; font-weight: bold; margin-top: 16px;">📊 <strong>Total Estimado da Remuneração</strong></h3>
     <p style="font-size: 20px; font-weight: bold;">💸 ${total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'})}</p>
@@ -475,4 +486,5 @@ function Voltar() { window.location.href = "https://diegofausto.github.io/calcul
   </script>
 </body>
 </html>
+
 

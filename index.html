@@ -436,7 +436,7 @@ function atualizarTransporte() {
 
     //    const premioAssiduidade = (filial === "02" && (cargo === "01" || cargo === "02")) ? if(salario *0.1)>288.12      100 : 0;
 
-      const total = salario + premioAssiduidade + previdenciaValor + totalSaude + valorAlimentacao + valorSeguro + valorOdonto + valorTransporte + valorRefeicao  ;
+      const total = salario + premioAssiduidade + valorPericulosidade + valorAdicionalNoturno+ previdenciaValor + totalSaude + valorAlimentacao + valorSeguro + valorOdonto + valorTransporte + valorRefeicao  ;
 
       const subtotalDireta = salario + (filial === "02" ? premioAssiduidade : 0) + valorPericulosidade + valorAdicionalNoturno;
       const subtotalIndireta = (previdenciaValor + valorTransporte + valorRefeicao + valorAlimentacao + valorSeguro + valorOdonto + totalSaude);
@@ -465,7 +465,7 @@ const relatorio = `
     <p style="font-weight: bold; margin-top: 8px;">🔢 <strong>Subtotal Remuneração Indireta:</strong> R$ ${subtotalIndireta.toFixed(2)}</p>
     <p style="background-color: #ffffcc; padding: 8px; border-left: 4px solid #ffcc00; font-style: italic; margin-top: 8px;">
       💡 <strong>Benefício também é dinheiro — só muda a forma como chega até você.</strong>
-    </p> <h3 style="font-size: 18px; font-weight: bold; margin-top: 16px;">📊 <strong>Total Estimado da Remuneração</strong></h3>
+    </p> <h3 style="font-size: 18px; font-weight: bold; margin-top: 16px;"></h3>
    
     <h3 style="font-size: 18px; font-weight: bold; margin-top: 16px;">📊 <strong>Total Estimado da Remuneração</strong></h3>
     <p style="font-size: 20px; font-weight: bold;">💸 ${total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'})}</p>
@@ -484,5 +484,6 @@ function Voltar() { window.location.href = "https://diegofausto.github.io/calcul
   </script>
 </body>
 </html>
+
 
 

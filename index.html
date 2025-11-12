@@ -439,7 +439,7 @@ function atualizarTransporte() {
       const total = salario + premioAssiduidade + previdenciaValor + totalSaude + valorAlimentacao + valorSeguro + valorOdonto + valorTransporte + valorRefeicao  ;
 
       const subtotalDireta = salario + (filial === "02" ? premioAssiduidade : 0) + valorPericulosidade + valorAdicionalNoturno;
-      const subtotalIndireta = (previdenciaValor + valorTransporte + valorRefeicao + valorAlimentacao + valorSeguro + valorOdonto);
+      const subtotalIndireta = (previdenciaValor + valorTransporte + valorRefeicao + valorAlimentacao + valorSeguro + valorOdonto + totalSaude);
 
 
 const relatorio = `
@@ -484,4 +484,5 @@ function Voltar() { window.location.href = "https://diegofausto.github.io/calcul
   </script>
 </body>
 </html>
+
 
